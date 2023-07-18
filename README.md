@@ -42,19 +42,13 @@ It is still designed to work if year is missing, and can still work in other sit
 
 ## How to use?
 
-1. Install the appropriate packages:
+- Install the appropriate packages:  ```pip install -r requirements.txt```
 
-```bash
-pip install -r requirements.txt
-```
+- Get a DISCOGS API token from https://www.discogs.com/settings/developers
 
-2. Get a DISCOGS API token from https://www.discogs.com/settings/developers
+- set environment variable DISCOGS_TOKEN={your Discogs API token}
 
-3. set environment variable DISCOGS_TOKEN={your Discogs API token}
-
-4. A workflow.bat is included, which guides us through the steps of searching, downloading, and embedding the proper cover artwork:
-
-5. The steps are:
+- A workflow.bat is included, which guides us through the steps of searching, downloading, and embedding the proper cover artwork. The steps are:
 
     1. Run cover_downloader.py (generates download script, and huge log file)
 
