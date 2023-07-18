@@ -1,12 +1,8 @@
 # classics_cover_downloader
 
-classics_cover_downloader is a thorough cover art downloader for music, optimized for early 1900s vinyl singles with "A" and "B" sides.
+classics_cover_downloader is a _thorough_ cover art downloader for music, optimized for ***untagged*** _music files_ from early 1900s vinyl singles with "A" and "B" sides.
 
-
-
-
-
-It's specifically made for songs in the "artist - title (year).mp3" filename format.
+It's specifically made for songs in the "```artist - title (year).mp3```" filename format, as it does not read any tags and assumes the only information that exists is in the filename itself.  
 
 It should work in other situations too, just not as well.
 
@@ -23,19 +19,24 @@ It uses the Discogs API and Discogs.com exclusively.
 2. **Its early-1900s vinyl-single specificity.** 
    This was specifically written for early 1900s vinyl record releases with A and B sides and has a lot of logic related to detecting whether the song in queston is an A or B side of the vinyl. Thus, it will sometimes download multiple images to get the back image of the record, in the event that a song is a B-side. Due to release structures implementation minutiae with Discogs.com, B-sides songs may end up causing the download of several images. The strategy is to get a few wrong images in order to ensure we get the right image. You, the user, willl have to delete any wrong images. This is about saving search time, and it's much faster to delete the wrong images than it is to search for the correct ones. But it's not possible, programatically, to always get the correct one for B-sides. The intersection of "vinyl logic" and "Discogs API logic" is a special hellscape.
 
+1. The fact that it **gets its initial information from the filename itself** because of the assumption that we are dealing with _untagged_ music.
 
 
-## What situation is this for?
+
+## What situation is this for (longer exlanation)?
 
 It is written for the "music situation" of having a folder of a lot of different songs by different artists, such as:
+```
   Lee Morse - Dallas Blues (1925).mp3
   Fletcher Henderson & His Orch - I'll Take Her Back If She Wants To Come Back (1925).mp3
   Henry Burr - You Forgot To Remember (1925).mp3
   Paul Whiteman & His Orch - Charleston (1925).mp3
+```
+The assumption is the base filename format is:  ```{artist} - {title} ({year})```, and that the music is untagged.
 
-The assumption is the filename format is:  {artist} - {title} ({year})
+It will still work if year is missing, but it will be less likely to find the correct release without knowing the year.
 
-It is still designed to work if year is missing, and can still work in other situations too. Try it and see what happens. Can't hurt.
+It will still work for any song in any format -- the results just won't be as useful if they don't follow this format. We've got to start with *some* knowledge.
 
 
 
@@ -85,15 +86,15 @@ It is still designed to work if year is missing, and can still work in other sit
 	* Discog searches are wonky and only the most exact matches find what we want. We were getting a mere 5% success rate without fuzzy matching.
 	* So fuzzy matching is used on a basket of amalgamated search results
 	* We research our music approximately 10 ways:
-		1. Research 1:  Search by artist                                         (sometimes has thousands of results)
-		1. Research 2:  Search by artist and title                               (sometimes has        no    results)
-		1. Research 3:  Search by title  and year                                (sometimes has    dozens of results)
-		1. Research 4:  Search by title                                          (sometimes has  hundreds of results, mabye thousands)
-		1. Research 5:  Optional Search by artist truncated after "&" and year   (sometimes has thousands of results)
-		1. Research 6:  Optional Search by artist with "'s" changed to "& His"   (finds results where none would be found otherwise, often    )
-		1. Research 7:  Optional Search by artist with "'s" changed to "& Her"   (finds results where none would be found otherwise, sometimes)
-		1. Research 8:  Optional Search by artist with "'s" changed to "& Their" (finds results where none would be found otherwise, seldom   )
-		1. Research 9+: Additional queries generated at runtime to change any "&" to " and ", as well as vice versa
+		- Research 1:  Search by artist                                         (sometimes has thousands of results)
+		- Research 2:  Search by artist and title                               (sometimes has        no    results)
+		- Research 3:  Search by title  and year                                (sometimes has    dozens of results)
+		- Research 4:  Search by title                                          (sometimes has  hundreds of results, mabye thousands)
+		- Research 5:  Optional Search by artist truncated after "&" and year   (sometimes has thousands of results)
+		- Research 6:  Optional Search by artist with "'s" changed to "& His"   (finds results where none would be found otherwise, often    )
+		- Research 7:  Optional Search by artist with "'s" changed to "& Her"   (finds results where none would be found otherwise, sometimes)
+		- Research 8:  Optional Search by artist with "'s" changed to "& Their" (finds results where none would be found otherwise, seldom   )
+		- Research 9+: Additional queries generated at runtime to change any "&" to " and ", as well as vice versa
 	* ...And gather all the results from all of these and use fuzzy logic to look for the right release via a mathematically weighted scoring algorithm
 	* ...Research #5 is particularly interesting in that it checks on the artist name before the first ampersand
 	     This is because composers exist in the filename next to artists in a lot of downloads of these old releases, and muddy the search results.
