@@ -14,21 +14,13 @@ It uses the Discogs API and Discogs.com exclusively.
 
 
 
-               POSSIBLE BUG: I believe if this were run on modern music, this logic would result in you getting the artwork
-                             of the back of the CD in cases where you would want the artwork on the front of the CD instead
-                             But I'm hoping this works well for modern music too, in case you have a folder of random songs
-                      BUUUT: It seems pretty good for what modern music I tested it on, actually! [but it wasn't very much]
-
-
-
-
 
 
 ## What makes it different from any other?
 
-1) Its thoroughness with matching and downloading. This is made for a THOROUGH person.
+1. **Its thoroughness** with matching and downloading. This is made for a THOROUGH person.
 
-2) Its early-1900s vinyl-single specificity. 
+2. **Its early-1900s vinyl-single specificity.** 
    This was specifically written for early 1900s vinyl record releases with A and B sides and has a lot of logic related to detecting whether the song in queston is an A or B side of the vinyl. Thus, it will sometimes download multiple images to get the back image of the record, in the event that a song is a B-side. Due to release structures implementation minutiae with Discogs.com, B-sides songs may end up causing the download of several images. The strategy is to get a few wrong images in order to ensure we get the right image. You, the user, willl have to delete any wrong images. This is about saving search time, and it's much faster to delete the wrong images than it is to search for the correct ones. But it's not possible, programatically, to always get the correct one for B-sides. The intersection of "vinyl logic" and "Discogs API logic" is a special hellscape.
 
 
@@ -64,16 +56,16 @@ pip install -r requirements.txt
 
 The steps are:
 
-	1) Run cover_downloader.py (generates download script, and huge log file)
+	1. Run cover_downloader.py (generates download script, and huge log file)
 
-	2) Run the generated get-art.bat file. It will download all the artwork. Enjoy!
+	2. Run the generated get-art.bat file. It will download all the artwork. Enjoy!
 
-	3) Manually review downloaded art and delete the inappropriate ones, crop any that are badly cropped, and make any other subjective edits.
+	3. Manually review downloaded art and delete the inappropriate ones, crop any that are badly cropped, and make any other subjective edits.
            Many different artworks will be downloaded, specifically if song is detected as a B-side or if multiple releases have a tied score for our fuzzy match algorithm
 
-	4) Optionally run wedding_party.py to separate the successes from the failures. Handy if you want to retry the failures again. Discogs API isn't always consistent and somtimes a retry gives more results.
+	4. Optionally run wedding_party.py to separate the successes from the failures. Handy if you want to retry the failures again. Discogs API isn't always consistent and somtimes a retry gives more results.
 
-	5) Run CoverEmbedder.py to embed our final set of JPGs into our MP3/FLACs
+	5. Run CoverEmbedder.py to embed our final set of JPGs into our MP3/FLACs
 
 
 
