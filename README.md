@@ -53,14 +53,16 @@ It will still work for any song in any format -- the results just won't be as us
 
     - Run ```cover_downloader.py``` (generates download script, and huge log file)
 
-    - Run the generated ```get-art.bat``` file. It will download all the artwork. Enjoy!
+    - Run the freshly-generated ```get-art.bat``` file. It will download all the artwork. Enjoy!
 
     - Manually review downloaded art and delete the inappropriate ones, crop any that are badly cropped, and make any other subjective edits.
        Many different artworks will be downloaded, specifically if song is detected as a B-side or if multiple releases have a tied score for our fuzzy match algorithm
     
     - Optionally run ```wedding_party.py``` to separate the successes from the failures. Handy if you want to retry the failures again. Discogs API isn't always consistent and somtimes a retry gives more results.
     
-    - Run ```cover_embedder.py``` to embed our final set of JPGs into our MP3/FLACs
+    - Run ```cover_embedder.py`` to generate our cover embed script. It calls my add-art-to-song.bat files which I've included, but which you may want to modify. Embedding was an afterthought to downloading, and the embedder is very me-specific, and the part most likely to need modification for your own purposes. It's also the simpleist part of all of this
+    
+    - Run the freshly-generated ``embed-art.bat`` to embed our final set of JPGs into our MP3/FLACs
 
 
 

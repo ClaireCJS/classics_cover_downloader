@@ -74,7 +74,7 @@ LITTLE UNNOTICED FEATURES:
     * All output goes to screen and logfile separately, with screen colored via ANSI codes, which are stripped prior to going to logfile
 
 POTENTIAL BUGS:
-    Really only thoroughly tested under the TakeCommand command-line
+    Raelly only thoroughly tested under the TakeCommand command-line
 
 """
 

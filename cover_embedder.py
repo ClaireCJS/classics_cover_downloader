@@ -3,7 +3,7 @@ import glob
 import re
 
 #ommand_template = 'eyed3.exe --add-image="{jpgfilename}:FRONT_COVER" "{audiofilename}"'            # this one only works for mp3s
-command_template = '%COLOR_NORMAL% %+ call add-art-to-song "{jpgfilename}" "{audiofilename}"'       # this one uses my BAT wrapper that looks at the extension and runs a diferent BAT for mp3s than for flacs
+command_template = 'call add-art-to-song "{jpgfilename}" "{audiofilename}"'                         # this one uses my BAT wrapper that looks at the extension and runs a diferent BAT for mp3s than for flacs
 
 audio_files = glob.glob('*.mp3') + glob.glob('*.flac')                                              # Get a list of all audio files (mp3 and flac) in the current folder
 
