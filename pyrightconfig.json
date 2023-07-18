@@ -1,0 +1,13 @@
+{
+  "pythonPath": "C:/ProgramData/Anaconda3/python.exe",
+  "venvPath"  : "C:/ProgramData/Anaconda3/",
+  "include"   : [
+    "**/*.py",
+    "./src",
+    "./tests",
+  ],
+  "extraPaths": [
+    "c:/ProgramData/Anaconda3/lib/site-packages",
+  ]
+}
+ 
