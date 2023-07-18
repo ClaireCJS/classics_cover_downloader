@@ -50,16 +50,16 @@ It is still designed to work if year is missing, and can still work in other sit
 
 - A ```workflow.bat``` is included, which guides us through the steps of searching, downloading, and embedding the proper cover artwork. The steps are:
 
-    1. Run ```cover_downloader.py``` (generates download script, and huge log file)
+    - Run ```cover_downloader.py``` (generates download script, and huge log file)
 
-    2. Run the generated get-art.bat file. It will download all the artwork. Enjoy!
+    - Run the generated ```get-art.bat``` file. It will download all the artwork. Enjoy!
 
-    3. Manually review downloaded art and delete the inappropriate ones, crop any that are badly cropped, and make any other subjective edits.
+    - Manually review downloaded art and delete the inappropriate ones, crop any that are badly cropped, and make any other subjective edits.
        Many different artworks will be downloaded, specifically if song is detected as a B-side or if multiple releases have a tied score for our fuzzy match algorithm
     
-    4. Optionally run wedding_party.py to separate the successes from the failures. Handy if you want to retry the failures again. Discogs API isn't always consistent and somtimes a retry gives more results.
+    - Optionally run ```wedding_party.py``` to separate the successes from the failures. Handy if you want to retry the failures again. Discogs API isn't always consistent and somtimes a retry gives more results.
     
-    5. Run CoverEmbedder.py to embed our final set of JPGs into our MP3/FLACs
+    - Run ```cover_embedder.py``` to embed our final set of JPGs into our MP3/FLACs
 
 
 
@@ -70,10 +70,10 @@ It is still designed to work if year is missing, and can still work in other sit
 ## What is this thoroughness in search you speak of? What other unnoticed features are there?
 
 
-* Caching of redundant API calls along with statkeeping so we know how much we saved.
-Basically, multiple songs by the same artist translate to an increased successful caching frequency.
-* Transforms "Orch" to "Orchestra" and "Qt" to "Quartet" prior to searching
-* ignores "(v1)" version notations in filenames
+* Caching of redundant API calls along with stat-keeping so we know how much we saved. (Basically, multiple songs by the same artist translate to an increased successful caching frequency.)
+* Filename considerations
+Transforms "```Orch```" to "```Orchestra```" and "```Qt```" to "```Quartet```" prior to searching
+* ignores "```(v1)```" version notations in filenames
 * ignores bracketed and braced text in filenames
 * The script outputted to download the art is actually outputted in PowerShell, unix shell, or TCC shell, based on autodetect. (But was only tested under TCC.)
 * All output goes to screen and logfile separately, with screen colored via ANSI codes, which are stripped prior to going to logfile
