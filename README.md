@@ -72,9 +72,10 @@ It is still designed to work if year is missing, and can still work in other sit
 
 * Caching of redundant API calls along with stat-keeping so we know how much we saved. (Basically, multiple songs by the same artist translate to an increased successful caching frequency.)
 * Filename considerations
-Transforms "```Orch```" to "```Orchestra```" and "```Qt```" to "```Quartet```" prior to searching
-* ignores "```(v1)```" version notations in filenames
-* ignores bracketed and braced text in filenames
+    * Transforms "```Orch```" to "```Orchestra```" prior to searching
+    * Transforms "```Qt```" to "```Quartet```" prior to searching
+    * ignores "```(v1)```" version notations in filenames
+    * ignores bracketed and braced text in filenames
 * The script outputted to download the art is actually outputted in PowerShell, unix shell, or TCC shell, based on autodetect. (But was only tested under TCC.)
 * All output goes to screen and logfile separately, with screen colored via ANSI codes, which are stripped prior to going to logfile
 * The Discogs API is NOT straightforward!
@@ -84,15 +85,15 @@ Transforms "```Orch```" to "```Orchestra```" and "```Qt```" to "```Quartet```" p
 	* Discog searches are wonky and only the most exact matches find what we want. We were getting a mere 5% success rate without fuzzy matching.
 	* So fuzzy matching is used on a basket of amalgamated search results
 	* We research our music approximately 10 ways:
-		# Research 1:  Search by artist                                         (sometimes has thousands of results)
-		# Research 2:  Search by artist and title                               (sometimes has        no    results)
-		# Research 3:  Search by title  and year                                (sometimes has    dozens of results)
-		# Research 4:  Search by title                                          (sometimes has  hundreds of results, mabye thousands)
-		# Research 5:  Optional Search by artist truncated after "&" and year   (sometimes has thousands of results)
-		# Research 6:  Optional Search by artist with "'s" changed to "& His"   (finds results where none would be found otherwise, often    )
-		# Research 7:  Optional Search by artist with "'s" changed to "& Her"   (finds results where none would be found otherwise, sometimes)
-		# Research 8:  Optional Search by artist with "'s" changed to "& Their" (finds results where none would be found otherwise, seldom   )
-		# Research 9+: Additional queries generated at runtime to change any "&" to " and ", as well as vice versa
+		1. Research 1:  Search by artist                                         (sometimes has thousands of results)
+		1. Research 2:  Search by artist and title                               (sometimes has        no    results)
+		1. Research 3:  Search by title  and year                                (sometimes has    dozens of results)
+		1. Research 4:  Search by title                                          (sometimes has  hundreds of results, mabye thousands)
+		1. Research 5:  Optional Search by artist truncated after "&" and year   (sometimes has thousands of results)
+		1. Research 6:  Optional Search by artist with "'s" changed to "& His"   (finds results where none would be found otherwise, often    )
+		1. Research 7:  Optional Search by artist with "'s" changed to "& Her"   (finds results where none would be found otherwise, sometimes)
+		1. Research 8:  Optional Search by artist with "'s" changed to "& Their" (finds results where none would be found otherwise, seldom   )
+		1. Research 9+: Additional queries generated at runtime to change any "&" to " and ", as well as vice versa
 	* ...And gather all the results from all of these and use fuzzy logic to look for the right release via a mathematically weighted scoring algorithm
 	* ...Research #5 is particularly interesting in that it checks on the artist name before the first ampersand
 	     This is because composers exist in the filename next to artists in a lot of downloads of these old releases, and muddy the search results.
