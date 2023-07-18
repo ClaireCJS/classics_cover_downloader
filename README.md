@@ -86,20 +86,20 @@ It will still work for any song in any format -- the results just won't be as us
 	* Discog searches are wonky and only the most exact matches find what we want. We were getting a mere 5% success rate without fuzzy matching.
 	* So fuzzy matching is used on a basket of amalgamated search results
 	* We research our music approximately 10 ways:
-		- Research 1:  Search by artist                                         (sometimes has thousands of results)
-		- Research 2:  Search by artist and title                               (sometimes has        no    results)
-		- Research 3:  Search by title  and year                                (sometimes has    dozens of results)
-		- Research 4:  Search by title                                          (sometimes has  hundreds of results, mabye thousands)
-		- Research 5:  Optional Search by artist truncated after "&" and year   (sometimes has thousands of results)
-		- Research 6:  Optional Search by artist with "'s" changed to "& His"   (finds results where none would be found otherwise, often    )
-		- Research 7:  Optional Search by artist with "'s" changed to "& Her"   (finds results where none would be found otherwise, sometimes)
-		- Research 8:  Optional Search by artist with "'s" changed to "& Their" (finds results where none would be found otherwise, seldom   )
-		- Research 9+: Additional queries generated at runtime to change any "&" to " and ", as well as vice versa
-	* ...And gather all the results from all of these and use fuzzy logic to look for the right release via a mathematically weighted scoring algorithm
+		- Research 1:  Search **by artist**                                         (sometimes has thousands of results)
+		- Research 2:  Search **by artist and title**                               (sometimes has        no    results)
+		- Research 3:  Search **by title  and year**                                (sometimes has    dozens of results)
+		- Research 4:  Search **by title**                                          (sometimes has  hundreds of results, mabye thousands)
+		- Research 5:  Optional Search **by artist truncated after "&" and year**   (sometimes has thousands of results)
+		- Research 6:  Optional Search **by artist with "'s" changed to "& His"**   (finds results where none would be found otherwise, often    )
+		- Research 7:  Optional Search **by artist with "'s" changed to "& Her"**   (finds results where none would be found otherwise, sometimes)
+		- Research 8:  Optional Search **by artist with "'s" changed to "& Their"** (finds results where none would be found otherwise, seldom   )
+		- Research 9+: Additional queries generated at runtime to **change any "&" to " and "**, as well as vice versa
+	* ...And gather ***all*** _the results_ from all of these and use ```fuzzy logic``` to look for the right release via a mathematically weighted scoring algorithm
 	* ...Research #5 is particularly interesting in that it checks on the artist name before the first ampersand
 	     This is because composers exist in the filename next to artists in a lot of downloads of these old releases, and muddy the search results.
 	     i.e. "Fletcher Henderson & Gershwin" often is a filename convention for Artist="Fletcher Henderson", Composer="Gershwin",
-		   so we search for "Fletcher Henderson" without the "& Gershwin" after it
+		   so we search for "Fletcher Henderson" without the "& Gershwin" after it to cover this odd case. Poorly-named files are an abomination, but they exist and must be dealt with.
 
 
 
