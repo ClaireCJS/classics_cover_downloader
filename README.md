@@ -42,30 +42,30 @@ It is still designed to work if year is missing, and can still work in other sit
 
 ## How to use?
 
-* Install the appropriate packages:
+1. Install the appropriate packages:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-* Get a DISCOGS API token from https://www.discogs.com/settings/developers
+2. Get a DISCOGS API token from https://www.discogs.com/settings/developers
 
-* set environment variable DISCOGS_TOKEN={your Discogs API token}
+3. set environment variable DISCOGS_TOKEN={your Discogs API token}
 
-* A workflow.bat is included, which guides us through the steps of searching, downloading, and embedding the proper cover artwork:
+4. A workflow.bat is included, which guides us through the steps of searching, downloading, and embedding the proper cover artwork:
 
-The steps are:
+5. The steps are:
 
-	1. Run cover_downloader.py (generates download script, and huge log file)
+    1. Run cover_downloader.py (generates download script, and huge log file)
 
-	2. Run the generated get-art.bat file. It will download all the artwork. Enjoy!
+    2. Run the generated get-art.bat file. It will download all the artwork. Enjoy!
 
-	3. Manually review downloaded art and delete the inappropriate ones, crop any that are badly cropped, and make any other subjective edits.
-           Many different artworks will be downloaded, specifically if song is detected as a B-side or if multiple releases have a tied score for our fuzzy match algorithm
-
-	4. Optionally run wedding_party.py to separate the successes from the failures. Handy if you want to retry the failures again. Discogs API isn't always consistent and somtimes a retry gives more results.
-
-	5. Run CoverEmbedder.py to embed our final set of JPGs into our MP3/FLACs
+    3. Manually review downloaded art and delete the inappropriate ones, crop any that are badly cropped, and make any other subjective edits.
+       Many different artworks will be downloaded, specifically if song is detected as a B-side or if multiple releases have a tied score for our fuzzy match algorithm
+    
+    4. Optionally run wedding_party.py to separate the successes from the failures. Handy if you want to retry the failures again. Discogs API isn't always consistent and somtimes a retry gives more results.
+    
+    5. Run CoverEmbedder.py to embed our final set of JPGs into our MP3/FLACs
 
 
 
