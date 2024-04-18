@@ -1,7 +1,7 @@
 import os
 import shutil
 import builtins
-from CoverDownloader import does_companion_exist, original_print, primt
+from cover_downloader import does_companion_exist, original_print, primt
 from colorama import Fore, Style, init
 init()
 
