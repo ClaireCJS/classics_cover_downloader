@@ -20,9 +20,10 @@ with open('embed-art.bat', 'w') as bat_file:                                    
         base_filename = os.path.splitext(audio_file)[0]                                             # Get the base filename without the extension
         jpg_filename = find_jpg(base_filename)                                                      # Search for a similarly named JPG
         if jpg_filename:                                                                            # Generate the command using the template and the filenames
+            print(f"     - yes companion jpg: {audio_file}")
             command = command_template.format(jpgfilename=jpg_filename, audiofilename=audio_file)
             bat_file.write(command + '\n')                                                          # Write the command to the bat file
-            print(f"     - yes companion jpg: {audio_file}")
+            bat_file.write('call divider\n')                                                        # divider.bat is just a cosmetic script that draws a horizontal divider line to separate output into sections
         else:
             print(f"     -  no companion jpg: {audio_file}")
     bat_file.write("\ndel /p get-art*.*\n\n")                                                       # Ask if we want to clean up after our past selves
