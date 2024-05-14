@@ -282,12 +282,29 @@ def delete_file_with_backup(filename):
 
 
 
-def does_companion_exist(filename):
+def does_companion_exist_OLD_tried_and_true_for_a_year(filename):
     base_filename = os.path.splitext(filename)[0]
     image_extensions = [".jpg", ".jpeg", ".png", ".webp"]
     possible_filenames = [f"{base_filename}{s}{image_extension}"
                           for s in ["", "A", "B"] + [f"B{i}" for i in range(1, 999)]
                           for image_extension in image_extensions]
+    for possible_filename in possible_filenames:
+        #primt("[CA] Checking " + possible_filename)
+        if file_exists_and_nonzero_size(possible_filename):
+            return True
+    return False
+
+
+
+def does_companion_exist(filename):                                 #new 2024/04/19 version of function to include truncated last character situation I've run into
+    base_filename_1 = os.path.splitext(filename)[0]                 #with    last charcter
+    base_filename_2 = os.path.splitext(filename)[:-1]               #without last charcter
+    image_extensions = [".jpg", ".jpeg", ".png", ".webp"]
+    possible_filenames = [ f"{filename_to_use}{fname_range_sfx}{image_extension}"
+                          for filename_to_use in [base_filename_1, base_filename_2]
+                          for fname_range_sfx in ["", "A", "B", "C"] + [f"B{i}" for i in range(1, 999)]
+                          for image_extension in image_extensions]
+    #primt("[PF] possible_filenames: " + possible_filenames)
     for possible_filename in possible_filenames:
         #primt("[CA] Checking " + possible_filename)
         if file_exists_and_nonzero_size(possible_filename):
@@ -993,9 +1010,9 @@ def clean_up_zero_byte_downloads():                                             
         file.write('\n:CleanUp_Zero_Byte_Images_Execute\n')
         if IS_WINDOWS and OUR_SHELL.lower() != "bash":
             file.write('set FMASK_IMAGE=*.jpg;*.jpeg;*.gif;*.png;*.bmp;*.webp;*.ico;*.tif;*.tiff;*.pcx;*.art;*.dcm;*.jfif;*.jpg_large;*.png_large\n')
-            if OUR_SHELL == "TCC": file.write('call delete-zero-byte-files\n\n')                                                    #i have my own script for this purpose so i call that one too just to be double-thorough
-            if OUR_SHELL == "TCC": file.write('for  %A in  (%FMASK_IMAGE%)  do ( if %@FILESIZE["%A"] == 0 (*del   "%A") )\n\n')
-            else:                  file.write('for %%A in ("%FMASK_IMAGE%") do (if %%~zA            equ 0 ( del "%%~A") )\n\n')     #untested
+            if OUR_SHELL == "TCC": file.write('call delete-zero-byte-files %FMASK_IMAGE%\n\n')                                      #i have my own script for this purpose so i call that one too just to be double-thorough, however that script needs to be passed a list of extensions or it ends up deleting other 0-byte files that are unrelated to this task
+            if OUR_SHELL == "TCC": file.write('for  %A in  (%FMASK_IMAGE%)  do ( if %@FILESIZE["%A"] == 0 (*del /p   "%A") )\n\n')
+            else:                  file.write('for %%A in ("%FMASK_IMAGE%") do (if %%~zA            equ 0 ( del /p "%%~A") )\n\n')  #untested
         else:
             file.write('export FMASK_IMAGE="*.jpg;*.jpeg;*.gif;*.png;*.bmp;*.webp;*.ico;*.tif;*.tiff;*.pcx;*.art;*.dcm;*.jfif;*.jpg_large;*.png_large"\n')
             file.write('find . -name "$FMASK_IMAGE" -size 0 -delete\n\n')                                                           #untested

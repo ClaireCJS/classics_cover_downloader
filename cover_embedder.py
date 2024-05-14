@@ -18,7 +18,9 @@ with open('embed-art.bat', 'w') as bat_file:                                    
     bat_file.write("@Echo OFF\n\n")
     for audio_file in audio_files:                                                                  # Iterate over audio files
         base_filename = os.path.splitext(audio_file)[0]                                             # Get the base filename without the extension
-        jpg_filename = find_jpg(base_filename)                                                      # Search for a similarly named JPG
+        jpg_filename = None
+        if jpg_filename is None: jpg_filename = find_jpg(base_filename     )                        # Search for a similarly named JPG
+        if jpg_filename is None: jpg_filename = find_jpg(base_filename[:-1])                        # Search for a similarly named JPG without the last character of the original name [for some reason I saw this happen in the wild]
         if jpg_filename:                                                                            # Generate the command using the template and the filenames
             print(f"     - yes companion jpg: {audio_file}")
             command = command_template.format(jpgfilename=jpg_filename, audiofilename=audio_file)

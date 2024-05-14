@@ -1,19 +1,21 @@
-@echo off
+@Echo OFF
 
-
-    SET ART=%1
-    SET MUSIC=%2
-    call validate-environment-variables ART MUSIC
-
-
-    metaflac --import-picture-from="%@UNQUOTE[%ART]" %MUSIC%
-
-
-    call warning "this is untested on flac yet - ERRORLEVEL = %ERRORLEVEL% - let's see what happens?!"
-    pause
+rem We had to move this functionality into a subordinate BAT file after discovering that WinAmp only displays
+rem artwork added by Metaflac if you remove the existing artwork first.  So adding requires removing first.
 
 
 
-    if ERRORLEVEL 1 (%COLOR_ERROR %+ ECHO %EMOJI_RED_EXCLAMATION_MARK%ERROR embedding art "%ART%" into song "%SONG%"!! %+ BEEP %+ pause %+ pause %+ pause %+ pause %+ pause %+ pause %+ pause %+ pause %+ pause)
-REM if ERRORLEVEL 0 .and. %DONT_DELETE_ART_AFTER_EMBEDDING ne 1 (del %ART%)
-    if ERRORLEVEL 0 .and. %DONT_DELETE_ART_AFTER_EMBEDDING ne 1 (%COLOR_SUCCESS% %+ echo %EMOJI_CHECK_MARK%Success!!! %+ if %DONT_DELETE_ART_AFTER_EMBEDDING ne 1 (%COLOR_REMOVAL %+ del %ART%))
+rem Capture parameters and validate environment:
+        set PARAMS_ADDARTTOFLAC=%*
+        set PARAM_ADDARTTOFLAC_1=%1
+        set PARAM_ADDARTTOFLAC_2=%2
+        if %VALIDATED_ADDARTTOFLAC ne 1 (
+            call validate-in-path remove-art-from-flac add-art-to-flac-helper 
+            set VALIDATED_ADDARTTOFLAC=1
+        )
+
+rem Remove old art, add new art:
+        call remove-art-from-flac                          %PARAM_ADDARTTOFLAC_2%
+        call add-art-to-flac-helper %PARAM_ADDARTTOFLAC_1% %PARAM_ADDARTTOFLAC_2%
+
+
