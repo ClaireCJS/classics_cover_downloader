@@ -134,7 +134,7 @@ IMAGES_FOUND         = 0
 RESULTS_FOUND        = 0
 DOWNLOADED_URLS      = set()                    #to keep track of downloaded URLs      so we don't download from the same URL      more than once
 DOWNLOADED_FILENAMES = set()                    #to keep track of downloaded filenames so we don't download to   the same filename more than once
-
+file                 = None
 
 
 
@@ -319,6 +319,7 @@ def does_companion_exist(filename):                                 #new 2024/04
 
 def initialize_download_script():
     global DOWNLOAD_SCRIPT
+    global file
     with open(DOWNLOAD_SCRIPT, "a", encoding='utf-8') as file:
         file.write('@Echo OFF\n')
         file.write('\n\n:Start\n')
@@ -669,11 +670,13 @@ def sort_results_with_fuzzy_logic(results, title, artist, year, artist_before_am
     for result in results:
         #DEBUG: primt(f"\n\t{Fore.GREEN}dealing with results: {str(result)} "  )
 
+        if "artisttitle" not in result: result["artisttitle"] = ""                # Assign an empty string to 'artisttitle' if it does not exist
+
         #swap the current title into a field called artisttitle that is more accurately named to represents what it is, but don't do it
         #if it's already been done, since we may be recursing into here a 2nd time and dealing with a previously-massaged data structure
         if result["title"] != "":
-            result["artisttitle"] = result["title"]                                   #"Metallica - One / The Prince" #this field is actually "artist - title" because of the sloppy way Discogs does it, so we store it back into the data structure just to make things less ambiguous internally
-            result["title"]       = ""                                                #leave this in so we know our results are processed ;)
+            result["artisttitle"] = result["title"]                               #"Metallica - One / The Prince" #this field is actually "artist - title" because of the sloppy way Discogs does it, so we store it back into the data structure just to make things less ambiguous internally
+            result["title"]       = ""                                            #leave this in so we know our results are processed ;)
 
         #extract our values for parsed_artist and parsed_title
         if " - " in result["artisttitle"]:                                        #separate "artist - title" into artist & title if there's a hyphen
@@ -791,7 +794,7 @@ def sort_results_with_fuzzy_logic(results, title, artist, year, artist_before_am
 
 def year_similarity_score(year1, year2):
     #primt(f"            ..[YSS]year_similarity_score(year1={year1},year2={year2})")
-    max_difference = 100                    #set to match same value as our fuzzy match library
+    max_difference = 100                                                                   #set to match same value as our fuzzy match library
 
     int_year1 = int(year1)
     int_year2 = int(year2)
@@ -824,7 +827,7 @@ def display_results(results):
         primt(  f"\t                id: {result.get('id'                     , 'N/A')}")
         primt(  f"\t     Title Befor /: {result.get('title_before_slash'     , 'N/A')}")
         primt(  f"\t     Title After /: {result.get('title_after_slash'      , 'N/A')}")
-        #rimt(  f"\t         master_id: {result.get('master_id'              , 'N/A')}")    #master_id not defined in this situation
+        #rimt(  f"\t         master_id: {result.get('master_id'              , 'N/A')}")                                                  #master_id not defined in this situation
         primt(  f"\t        is B-side?: {result.get('is_b_side'              , 'N/A')} (bef={result.get('score_slash_before','N/A')},aft={result.get('score_slash_after','N/A')})")
         primt(  f"\t        our scores: {result.get('score'                  , 'N/A')} " +
                 f"(a={result.get('score_artist', 'N/A')}[og={result.get('score_artist_og','N/A')}/ba={result.get('score_artist_ba','N/A')}/" +
@@ -882,7 +885,7 @@ def search_and_download_bside_images(results, filename, response):
             tmp_filename = modify_filename_with_letter(filename, "B" + str(image_number))
             download_image(cover_image_url_b, tmp_filename)
             image_found = True
-            ## we stopped doing this so that we could gather ALL the b-side potential images instead of just the first:
+            ### we stopped doing this so that we could gather ALL the b-side potential images instead of just the first:
             #return cover_image_url_b
 
     if image_found: return cover_image_url_b            #this return value is really only checked to see if it's not None
@@ -921,16 +924,20 @@ def fetch_release_data(resource_url):
 #    data = response.json()
 #    if "cover_image" in data: return data["cover_image"]
 #    return None
-#TODO think this is no longer used anywhere!
+#this is no longer used anywhere!
 
 
 
 
 def modify_filename_with_letter(filename, letter):
     base, extension = os.path.splitext(filename)
-    if letter == 'A' or letter[0] == 'B':
+    #f letter == 'A' or letter[0] == 'B' :
+    if letter == 'A' or letter[0] == 'B' or letter[0] == 'C':
         pattern = re.compile(r'[A-Z][0-9]*$', re.IGNORECASE)
+        primt(f'        rem base for filename {filename} is {base}, extension is {extension}\n')       #2024/05
         base = pattern.sub('', base)  # Remove the existing suffix, if present
+        primt(f'                                 rem is now {base}, extension is {extension}\n\n')     #2024/05
+        #TODO: BUG: something is wrong here. "Cherries.jpg" becoming "CherrieB9.jpg instead of "CherriesB9.jpg". Will have to look into it.
     return f"{base}{letter}{extension}"
 
 
@@ -1043,7 +1050,7 @@ def final_report(start_time):
     if (API_CALLS_MADE+API_CALLS_SAVED_BY_CACHING) != 0:
         primt(f"{API_CALLS_SAVED_BY_CACHING} API calls were saved via {CACHE_HITS} cache hits ({round((API_CALLS_SAVED_BY_CACHING/(API_CALLS_MADE+API_CALLS_SAVED_BY_CACHING))*100)}% savings).")
     primt(f"{Fore.BLUE}{THROTTLE_API_CALLS_LEFT} API calls were remaining at the moment of the very last request.")
-    primt(f"\n{Style.BRIGHT}{Fore.RED}----------------------> Time to run get-art.bat !!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    primt(f"\n{Style.BRIGHT}{Fore.RED}——————————————————————> Time to run get-art.bat !!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 
 
